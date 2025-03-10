@@ -1,0 +1,8 @@
+output
+data
+notebooks
+Trash
+modelling/checkpoint*
+modelling/models
+modelling/logs
+model_dir

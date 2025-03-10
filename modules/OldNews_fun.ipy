@@ -1,0 +1,26 @@
+#packages
+import dask.dataframe as dd
+import pandas as pd
+import numpy
+import re
+
+#remove html stuff
+def remove_html(text):
+    '''
+    removing html specific lines in data such as </b>
+    '''
+    pattern = r'<.*?>'
+    return re.sub(pattern, '', text)
+
+#remove whitespaces
+def remove_lines(text):
+    return text.strip()
+
+
+def remove_link(text):
+    '''
+    remove html and link specific references to ground material in dataframe
+    '''
+    regex = r'<a.*\"'
+    return re.sub(regex, '', text)
+
