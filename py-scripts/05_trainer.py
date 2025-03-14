@@ -75,7 +75,7 @@ data_collator = DataCollatorForLanguageModeling(
 # Enhanced Training arguments
 training_args = TrainingArguments(
     output_dir=modelling_dir,
-    evaluation_strategy="steps",  # Note: it's 'evaluation_strategy', not 'eval_strategy'
+    evaluation_strategy="steps",
     overwrite_output_dir=True,
     num_train_epochs=15,
     per_device_train_batch_size=16, # training batch size
@@ -108,7 +108,7 @@ trainer = Trainer(
     args=training_args,
     data_collator=data_collator,
     train_dataset=final_dataset['train'],
-    eval_dataset=final_dataset['validation'],
+    eval_dataset=final_dataset['test'],
 )
 
 # train the model
