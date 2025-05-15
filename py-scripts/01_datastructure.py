@@ -38,7 +38,7 @@ df = df.persist()
 df = df.drop(columns=['lignende_tekster', 'kontekst'])
 
 def txt_len(row):
-    return len(row['text'])  # Example: compute the length of 'text'
+    return len(row['text'])  #compute the length of 'text'
 
 # Apply function row-wise using apply (with axis=1 for rows)
 df['text_length'] = df.apply(txt_len, axis=1, meta=('text_length', 'int'))
