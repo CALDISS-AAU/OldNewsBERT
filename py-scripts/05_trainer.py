@@ -3,6 +3,7 @@ import numpy as np
 import sys
 import os
 from os.path import join
+import math
 from datasets import Dataset
 from datasets import *
 import accelerate
@@ -66,23 +67,22 @@ model = BertForMaskedLM(config=model_config)
 model.to(local_rank)
 
 
-# initialize the data collator, randomly masking 20% (default is 15%) of the tokens for the Masked Language
-# Modeling (MLM) task
+# initialize the data collator
 data_collator = DataCollatorForLanguageModeling(
     tokenizer=tokenizer, mlm=True, mlm_probability=0.15
 )
 
-# Enhanced Training arguments
+# Training arguments
 training_args = TrainingArguments(
     output_dir=modelling_dir,
-    evaluation_strategy="steps",  # Note: it's 'evaluation_strategy', not 'eval_strategy'
+    eval_strategy="steps",
     overwrite_output_dir=True,
-    num_train_epochs=15,
+    num_train_epochs=16,
     per_device_train_batch_size=16, # training batch size
     gradient_accumulation_steps=4, # Accumulating the gradients before updating the weights
     per_device_eval_batch_size=64, # Evaluating batch size
     logging_steps=500,
-    learning_rate=5e-5, # defining learning rate
+    learning_rate=5e-5,
     save_steps=1000,
     save_total_limit=5,
     load_best_model_at_end=True,
@@ -98,18 +98,21 @@ training_args = TrainingArguments(
     save_on_each_node=False,
     ddp_find_unused_parameters=False,
     optim="adamw_torch",
-    # Let the LOCAL_RANK environment variable handle this
     local_rank=local_rank,
 )
 
-# initialize the trainer and pass everything to it
+# initialize the trainer
 trainer = Trainer(
     model=model,
     args=training_args,
     data_collator=data_collator,
     train_dataset=final_dataset['train'],
-    eval_dataset=final_dataset['validation'],
+    eval_dataset=final_dataset['test'],
 )
 
 # train the model
 trainer.train()
+
+# Calculate perplexity on loss
+eval_results = trainer.evaluate()
+print(f"Perplexity: {math.exp(eval_results['eval_loss']):.2f}")
