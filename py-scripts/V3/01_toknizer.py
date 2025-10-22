@@ -56,7 +56,7 @@ wordpiece_tokenizer_v3.train_from_iterator(
 # Save WordPiece tokenizer
 wordpiece_tokenizer_v3.save_model('/work/Ccp-OldNewsBERT_2024/tokenizer/V3')
 
-# Save config.json manually
+# Save config.json
 with open(os.path.join('/work/Ccp-OldNewsBERT_2024/tokenizer/V3', "config.json"), "w") as f:
     tokenizer_cfg = {
         "do_lower_case": True,
