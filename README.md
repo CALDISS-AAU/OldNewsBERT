@@ -1,4 +1,4 @@
-# ccp-oldnewsbert-2024
+# OldNewsBERT
 
 `ccp-oldnewsbert-2024` is an experimental Danish masked language modeling project focused on pretraining and continued pretraining for historical and news-oriented text corpus. The project utilizes the `Endevældens Nyheder Online (ENO)` dataset. The repository contains two main training tracks:
 
